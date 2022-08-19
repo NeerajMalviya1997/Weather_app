@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  <style>
+      *{
+          margin: 0px;
+          padding: 0px;
+      }
+      #parent{
+        width: 100%;
+         height: 635px;
+         
+         background-image:url(https://th.bing.com/th/id/OIP.x8wRNYLcn6qb42_6ISYibgHaEK?w=283&h=180&c=7&r=0&o=5&pid=1.7);
+         background-repeat: no-repeat;
+         background-size: cover;
+        
+      }
+   #form{
+     width: 30%;
+     height: 100%;
+   }
+   #input{
+       margin: 20px;
+       width: 300px;
+       height: 50px;
+       border-radius: 20px
+   }
+   #button{
+       margin: 20px ;
+       width: 200px;
+       margin-top: -20px;
+       height: 30px;
+       border-radius: 10px
+   }
+   #dis>*{
+       color:black ;
+       margin: 20px;
+       font-size: 25px;
+   }
+   #dis>h3{
+        color: rgb(157, 255, 0);
+   }
+   #iframe{
+       margin-left: 180%;
+       margin-top: -100%;
+   }
+    
+  </style>
+</head>
+<body >
+    <div id="parent" >
+      
+        <form id="form" onsubmit="buttonfunc()">
+            <input type="text" id="input" placeholder="Enter city name">
+            <input type="submit" value="Search Weather" id="button">
+            <div id="dis">
+           
+            </div>
+            <iframe  frameborder="0" scrolling="no" marginheight="0" marginwidth="0" id="iframe" width="600" height="500"></iframe>
+        </form>
+        
+        
+    </div>
+</body>
+</html>
+<script>
+  function  buttonfunc(){
+      event.preventDefault()
+      let city=document.getElementById("input").value
+      let url=`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=177b7bc552511187db1de3bcec9a00f8`
+
+      async function getdata(){        
+          var result= await fetch(url)
+          var weather=await result.json()
+          append(weather)
+      }
+      getdata()
+
+  }
+  function append(data){
+         let h3=document.createElement("h3")
+         h3.innerText=data.name
+         let p=document.createElement("p")
+         p.innerText=" min temp is:"+"-"+data.main.temp_max;
+         let p1 =document.createElement("p")
+         p1.innerText="max temp is :"+data.main.temp_min
+         let p2 =document.createElement("p")
+         p2.innerText=`wind is speed is  ${data.wind.speed} and degree ${data.wind.deg}`
+         let p3 =document.createElement("p")
+         p3.innerText=`sunrise  ${data.sys.sunrise}`
+         let p4 =document.createElement("p")
+         p4.innerText=`sunset  ${data.sys.sunset}`
+         var iframe=document.getElementById("iframe")
+         iframe.src=`https://maps.google.com/maps?q=${data.name}&t=&z=13&ie=UTF8&iwloc=&output=embed`
+        document.getElementById("dis").append(h3,p,p1,p2,p3,p4)
+     
+    }  
+</script>
